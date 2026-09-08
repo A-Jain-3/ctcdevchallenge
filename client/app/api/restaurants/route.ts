@@ -16,7 +16,7 @@ export async function GET() {
     // as a string, timestamps as Date objects). See lib/types.ts.
     return NextResponse.json(rows.map(toRestaurant) => ({
       ...row,
-      rating: num(row.rathing),
+      rating: num(row.rating),
       createdAt: isoTimestamp(row.createdAt),
     }));
   } catch (err) {
