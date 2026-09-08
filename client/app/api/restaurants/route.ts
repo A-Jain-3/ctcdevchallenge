@@ -10,14 +10,14 @@ import { toRestaurant } from '@/lib/types';
 export async function GET() {
   try {
     const { rows } = await pool.query(
-      'SELECT * FROM restaurants ORDER BY createdAt DESC'
+      'SELECT * FROM restaurants ORDER BY created_at DESC'
     );
     // Map every row - raw rows don't match the contract (NUMERIC comes back
     // as a string, timestamps as Date objects). See lib/types.ts.
     return NextResponse.json(rows.map(toRestaurant) => ({
       ...row,
       rating: num(row.rating),
-      createdAt: isoTimestamp(row.createdAt),
+      created_at: isoTimestamp(row.created_at),
     }));
   } catch (err) {
     return handleError(err);
