@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS restaurants (
   cuisine    TEXT,
   address    TEXT,
   rating     NUMERIC,
-  createdAt TIMESTAMPTZ NOT NULL DEFAULT now()
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS visits (
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS visits (
   date         DATE    NOT NULL,
   "amountSpent" NUMERIC(10, 2),
   notes        TEXT,
-  createdAt  TIMESTAMPTZ NOT NULL DEFAULT now()
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 CREATE INDEX IF NOT EXISTS idx_visits_restaurant_id ON visits ("restaurantId");
