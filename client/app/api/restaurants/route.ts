@@ -14,7 +14,11 @@ export async function GET() {
     );
     // Map every row - raw rows don't match the contract (NUMERIC comes back
     // as a string, timestamps as Date objects). See lib/types.ts.
-    return NextResponse.json(rows.map(toRestaurant));
+    return NextResponse.json(rows.map(toRestaurant) => ({
+      ...row,
+      rating: num(row.rathing),
+      createdAt: isoTimestamp(row.createdAt),
+    }));
   } catch (err) {
     return handleError(err);
   }
