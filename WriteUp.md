@@ -57,8 +57,6 @@ none
 
 ## How I verified this
 
-curl -i http://localhost:3000/api/restaurants/cuisine/
-
 **Part A** - the contract table in CHALLENGE.md, every row including the error
 cases:
 
@@ -75,7 +73,7 @@ curl -i -X POST http://localhost:3000/api/restaurants \
 **Part B** - the equivalent cases for what you built:
 
 ```bash
-
+curl -i http://localhost:3000/api/restaurants/cuisine/
 ```
 
 ## Known issues / what I'd do next
