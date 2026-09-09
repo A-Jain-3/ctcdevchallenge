@@ -35,6 +35,20 @@ export async function GET() {
  * `rating` happily accepts 6. Decide what valid means for each field and reject
  * bad bodies with a 400 rather than letting them reach the database.
  */
-export async function POST(_req: Request) {
-  return NextResponse.json({ error: 'Not implemented' }, { status: 501 });
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const { name, cuisine, address, rating } = body;
+    const { rows } = await pool.query(
+      `INSERT INTO restaurants (name, cuisine, address, rating)
+       VALUES ($1, $2, $3, $4)
+       RETURNING *`,
+      [name, cuisine ?? null, address ?? null, rating ?? null]
+    );
+    const restaurant = toRestaurant(rows[0]);
+    return NextResponse.json(restaurant, { status: 201 });
+  } catch (err) {
+    console.error(err);
+    return NextResponse.json({ error: 'Not implemented' }, { status: 501 });
+  }
 }
