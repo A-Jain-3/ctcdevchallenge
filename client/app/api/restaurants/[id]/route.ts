@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { pool } from '@/db/pool';
-import { handleError } from '@/lib/errors';
+import { handleError, NotFoundError, ValidationError } from '@/lib/errors';
 import { toRestaurant } from '@/lib/types';
 
 type Params = { params: { id: string } };
@@ -129,7 +129,7 @@ export async function PUT(req: Request, ctx: Params) {
  */
 export async function DELETE(_req: Request, ctx: Params) {
   try {
-    const { id } = ctx.params;
+    const id = parseId(ctx.params.id);
 
     const { rows } = await pool.query(
       `DELETE FROM restaurants WHERE id = $1 RETURNING *`,
@@ -142,6 +142,6 @@ export async function DELETE(_req: Request, ctx: Params) {
 
     return new NextResponse(null, { status: 204 });
   } catch (err) {
-    return NextResponse.json({ error: 'Not implemented' }, { status: 501 });
+    return handleError(err);
   }
 }
