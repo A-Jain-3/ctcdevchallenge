@@ -10,17 +10,24 @@
 
 ## 1. What did you build for Part B, and why that?
 
-> What made you pick it over everything else you could have built? This is the
-> question we care most about - the _why_ matters more than the _what_.
+I thought about what features I'd really appreciate if I'm look at my personal restaurant tracker.
+I often don't know where to eat from, but sometimes I know what cuisine I want. Thus, I thought it 
+would be helpful to have a sorter that can give me the restaurants I have based on what cuisine they 
+are in so it would be easier for me to pick somewhere to eat out.
 
 ## 2. What did you decide, and what did you rule out?
 
-> Route shapes, data model, where the logic lives, what you deliberately didn't
-> do. Name a tradeoff you're not sure you got right.
+I focused on building another API file to store my function similar to how the GET, POST, and DELETE 
+functions were written. At first, I wanted to have a dropdown for different ways to sort by (cuisine, 
+date added,  rating, location), but I thought that was a lot so I settled on just having a cuisine sorter 
+since that was the most important to me. The UI for the new page lies in a new layout page that follows 
+the same design as the first one. The primary logic is in the SORT function of route.ts with the other functions.
 
 ## 3. Where did you cut corners?
 
-> What would you fix first with another day?
+I would make sure that I covered all the possible edge cases because I wasn't able to test them all. I would 
+also edit the function to sort based on alphabetic categories and make it look organized. I also think it 
+would be much more efficient if it just re-ordered itself on the original page instead of directing to a new
 
 ---
 
@@ -30,10 +37,9 @@
 > exercise it without reverse-engineering your code. Add or remove rows as
 > needed; delete this section if your Part B added no routes.
 
-| Method and path | What it does | Success | Errors       |
-| --------------- | ------------ | ------- | ------------ |
-| `GET /api/...`  |              | `200` + | `404` if ... |
-| `POST /api/...` |              | `201` + | `400` on ... |
+| Method and path                        | What it does | Success | Errors       |
+| ---------------                        | ------------ | ------- | ------------ |
+| `SORT /api/restaurants/[id]/route.ts`  | Sorts restaurants into categories based on cuisine | None | None |
 
 **`POST /api/...`**
 
@@ -47,18 +53,11 @@
 
 ## Schema changes
 
-> Any migrations you added (`002_*.sql`, ...), new tables or columns, and
-> anything a reviewer needs to run beyond `./setup.sh`. Write "none" if there
-> were none.
+none
 
 ## How I verified this
 
-> How you checked your work - the happy paths _and_ the failures. `curl`
-> commands, a Postman collection, a scratch script, screenshots: whatever you
-> actually used. Paste the commands.
->
-> This is much faster for us to review than working it out ourselves, and it's
-> how you show you checked the edge cases.
+curl -i http://localhost:3000/api/restaurants/cuisine/
 
 **Part A** - the contract table in CHALLENGE.md, every row including the error
 cases:
@@ -81,5 +80,5 @@ curl -i -X POST http://localhost:3000/api/restaurants \
 
 ## Known issues / what I'd do next
 
-> Anything broken, unfinished, or that you know is wrong. Being upfront here
-> costs you nothing and tells us a lot.
+I wasn't able to get the right error messaage to cover all the edge cases for part B so I just removed the 
+functionality entirely.
