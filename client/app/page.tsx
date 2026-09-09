@@ -27,6 +27,7 @@ export default async function HomePage() {
           </li>
         ))}
       </ul>
+      <a href="/cuisine" className="text-sm text-blue-600 hover:underline">View by cuisine</a>
     </div>
   );
 }
