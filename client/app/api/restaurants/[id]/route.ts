@@ -68,6 +68,24 @@ export async function PUT(req: Request, ctx: Params) {
  * restaurant's visits. Go read it. If you disagree with it, say so in your
  * write-up.
  */
-export async function DELETE(_req: Request, _ctx: Params) {
-  return NextResponse.json({ error: 'Not implemented' }, { status: 501 });
+export async function DELETE(_req: Request, ctx: Params) {
+  try {
+    const { id } = ctx.params;
+
+    const { rows } = await pool.query(
+      `DELETE FROM restaurants WHERE id = $1 RETURNING *`,
+      [id]
+    );
+
+    if (rows.length === 0) {
+      return NextResponse.json(
+        { error: 'Restaurant not found' },
+        { status: 404 }
+      );
+    }
+
+    return new NextResponse(null, { status: 204 });
+  } catch (err) {
+    return NextResponse.json({ error: 'Not implemented' }, { status: 501 });
+  }
 }
