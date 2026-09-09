@@ -3,6 +3,43 @@ import { pool } from '@/db/pool';
 import { handleError } from '@/lib/errors';
 import { toRestaurant } from '@/lib/types';
 
+function validateRestaurantInput(body: unknown) {
+  if (typeof body !== 'object' || body === null) {
+    throw new ValidationError('Request body must be a JSON object');
+  }
+
+  const { name, cuisine, address, rating } = body as Record<string, unknown>;
+  const errors: string[] = [];
+
+  if (typeof name !== 'string' || name.trim().length === 0) {
+    errors.push('name is required and must be a non-empty string');
+  }
+  if (cuisine !== undefined && cuisine !== null && typeof cuisine !== 'string') {
+    errors.push('cuisine must be a string or null');
+  }
+  if (address !== undefined && address !== null && typeof address !== 'string') {
+    errors.push('address must be a string or null');
+  }
+  if (rating !== undefined && rating !== null) {
+    if (typeof rating !== 'number' || Number.isNaN(rating)) {
+      errors.push('rating must be a number');
+    } else if (rating < 0 || rating > 5) {
+      errors.push('rating must be between 0 and 5');
+    }
+  }
+
+  if (errors.length > 0) {
+    throw new ValidationError(errors.join('; '));
+  }
+
+  return { name, cuisine, address, rating } as {
+    name: string;
+    cuisine: string | null | undefined;
+    address: string | null | undefined;
+    rating: number | null | undefined;
+  };
+}
+
 /**
  * GET /api/restaurants
  * Returns all restaurants.
@@ -34,17 +71,16 @@ export async function GET() {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, cuisine, address, rating } = body;
+    const { name, cuisine, address, rating } = validateRestaurantInput(body);
     const { rows } = await pool.query(
       `INSERT INTO restaurants (name, cuisine, address, rating)
        VALUES ($1, $2, $3, $4)
        RETURNING *`,
       [name, cuisine ?? null, address ?? null, rating ?? null]
     );
-    const restaurant = toRestaurant(rows[0]);
-    return NextResponse.json(restaurant, { status: 201 });
+
+    return NextResponse.json(toRestaurant(rows[0]), { status: 201 });
   } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: 'Not implemented' }, { status: 501 });
+    return handleError(err);
   }
 }
