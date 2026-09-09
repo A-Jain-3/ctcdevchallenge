@@ -145,3 +145,23 @@ export async function DELETE(_req: Request, ctx: Params) {
     return handleError(err);
   }
 }
+
+/**
+ * SORT
+ * Groups the restaurants by the cuisines they're in.
+ */
+export async function SORT(
+  restaurants: Restaurant[]
+): Record<string, Restaurant[]> {
+  const groups: Record<string, Restaurant[]> = {};
+
+  for (const restaurant of restaurants) {
+    const key = restaurant.cuisine ?? 'Uncategorized';
+    if (!groups[key]) {
+      groups[key] = [];
+    }
+    groups[key].push(restaurant);
+  }
+
+  return groups;
+}
