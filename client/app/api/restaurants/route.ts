@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { pool } from '@/db/pool';
-import { handleError } from '@/lib/errors';
+import { handleError, ValidationError } from '@/lib/errors';
 import { toRestaurant } from '@/lib/types';
 
 function validateRestaurantInput(body: unknown) {
