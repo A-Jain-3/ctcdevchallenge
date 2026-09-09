@@ -35,3 +35,13 @@ export async function getRestaurant(id: number | string): Promise<Restaurant> {
   const res = await fetch(`${API_URL}/api/restaurants/${id}`, { cache: 'no-store' });
   return res.json();
 }
+
+/**
+ * Fetch all restaurants grouped by cuisine.
+ */
+export async function getRestaurantsByCuisine(): Promise<Record<string, any>> {
+  const res = await fetch(`${API_URL}/api/restaurants/cuisine`, {
+    cache: 'no-store',
+  });
+  return res.json();
+}
